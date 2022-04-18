@@ -16,42 +16,36 @@ Config.LicenseRank = 2
 
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 Config.Locations = {
-    ["duty"] = {
-        [1] = vector3(440.085, -974.924, 30.689),
-        [2] = vector3(-449.811, 6012.909, 31.815),
-    },
-    ["vehicle"] = {
-        [1] = vector4(448.159, -1017.41, 28.562, 90.654),
-        [2] = vector4(471.13, -1024.05, 28.17, 274.5),
-        [3] = vector4(-455.39, 6002.02, 31.34, 87.93),
-    },
+    ["duty"] = {},
+    ["vehicle"] = {}, -- we use rcore_garage
     ["stash"] = {
-        [1] = vector3(453.075, -980.124, 30.889),
+        [1] = vector3(-1098.86, -826.04, 14.28),
     },
     ["impound"] = {
-        [1] = vector4(436.68, -1007.42, 27.32, 180.0),
+        [1] = vector4(-1062.2, -852.92, 4.87, 212.0),
         [2] = vector4(-436.14, 5982.63, 31.34, 136.0),
     },
     ["helicopter"] = {
-        [1] = vector4(449.168, -981.325, 43.691, 87.234),
+        [1] = vector4(-1096.42, -832.56, 37.7, 305.6),
         [2] = vector4(-475.43, 5988.353, 31.716, 31.34),
     },
-    ["armory"] = {
-        [1] = vector3(462.23, -981.12, 30.68),
-    },
+    ["armory"] = {},
     ["trash"] = {
-        [1] = vector3(439.0907, -976.746, 30.776),
+        [1] = vector3(-1085.2, -810.63, 11.04),
     },
     ["fingerprint"] = {
-        [1] = vector3(460.9667, -989.180, 24.92),
+        [1] = vector3(-1071.64, -824.47, 6.38),
+    },
+    ["dnacenter"] = {
+        [1] = vector3(-1071.64, -824.47, 6.38),
     },
     ["evidence"] = {
-        [1] = vector3(442.1722, -996.067, 30.689),
-        [2] = vector3(451.7031, -973.232, 30.689),
-        [3] = vector3(455.1456, -985.462, 30.689),
+        [1] = vector3(-1084.89, -808.32, 11.04),
+        [2] = vector3(-1081.87, -808.32, 11.04),
+        [3] = vector3(-1082.73, -811.03, 11.04),
     },
     ["stations"] = {
-        [1] = {label = "Police Station", coords = vector4(428.23, -984.28, 29.76, 3.5)},
+        [1] = {label = "Hopia-Island Police Department", coords = vector4(-1109.55, -846.19, 19.32, 307.12)},
         [2] = {label = "Prison", coords = vector4(1845.903, 2585.873, 45.672, 272.249)},
         [3] = {label = "Police Station Paleto", coords = vector4(-451.55, 6014.25, 31.716, 223.81)},
     },
@@ -104,59 +98,98 @@ Config.SecurityCameras = {
 Config.AuthorizedVehicles = {
 	-- Grade 0
 	[0] = {
-		["police"] = "Police Car 1",
-		["police2"] = "Police Car 2",
-		["police3"] = "Police Car 3",
-		["police4"] = "Police Car 4",
-		["policeb"] = "Police Car 5",
-		["policet"] = "Police Car 6",
-		["sheriff"] = "Sheriff Car 1",
-		["sheriff2"] = "Sheriff Car 2",
+		["2018k9chgrrb"] = "Dodge Charger",
+		["rbcv11"] = "Crown Victoria",
+		["lssd16"] = "Ford Interceptor",
+		["pd21tahoe"] = "Chevrolet Tahoe",
+		["17silvrb"] = "Chevrolet Silverado",
+		["jeepgd"] = "Jeep Gladiator",
+		["dreads"] = "HTSF Granger",
+		["hwp2018v2"] = "BMW HighSpeed",
+		["ACTPOLavantum"] = "Audi RS6",
+		["leotaxi"] = "Taxi",
+		["bearcat"] = "HTSF Blindé",
+		["riot2"] = "Antiemeute",
+		["um20fpiu"] = "Ford Interceptor Bana",
+		["um21tahoe"] = "Ford Tahoe Bana",
+		["umf150"] = "Ford F150 Bana",
+		["umrav4"] = "Toyota rav4 Bana",
 	},
 	-- Grade 1
 	[1] = {
-		["police"] = "Police Car 1",
-		["police2"] = "Police Car 2",
-		["police3"] = "Police Car 3",
-		["police4"] = "Police Car 4",
-		["policeb"] = "Police Car 5",
-		["policet"] = "Police Car 6",
-		["sheriff"] = "Sheriff Car 1",
-		["sheriff2"] = "Sheriff Car 2",
-
+		["2018k9chgrrb"] = "Dodge Charger",
+		["rbcv11"] = "Crown Victoria",
+		["lssd16"] = "Ford Interceptor",
+		["pd21tahoe"] = "Chevrolet Tahoe",
+		["17silvrb"] = "Chevrolet Silverado",
+		["jeepgd"] = "Jeep Gladiator",
+		["dreads"] = "HTSF Granger",
+		["hwp2018v2"] = "BMW HighSpeed",
+		["ACTPOLavantum"] = "Audi RS6",
+		["leotaxi"] = "Taxi",
+		["bearcat"] = "HTSF Blindé",
+		["riot2"] = "Antiemeute",
+		["um20fpiu"] = "Ford Interceptor Bana",
+		["um21tahoe"] = "Ford Tahoe Bana",
+		["umf150"] = "Ford F150 Bana",
+		["umrav4"] = "Toyota rav4 Bana",
 	},
 	-- Grade 2
 	[2] = {
-		["police"] = "Police Car 1",
-		["police2"] = "Police Car 2",
-		["police3"] = "Police Car 3",
-		["police4"] = "Police Car 4",
-		["policeb"] = "Police Car 5",
-		["policet"] = "Police Car 6",
-		["sheriff"] = "Sheriff Car 1",
-		["sheriff2"] = "Sheriff Car 2",
+		["2018k9chgrrb"] = "Dodge Charger",
+		["rbcv11"] = "Crown Victoria",
+		["lssd16"] = "Ford Interceptor",
+		["pd21tahoe"] = "Chevrolet Tahoe",
+		["17silvrb"] = "Chevrolet Silverado",
+		["jeepgd"] = "Jeep Gladiator",
+		["dreads"] = "HTSF Granger",
+		["hwp2018v2"] = "BMW HighSpeed",
+		["ACTPOLavantum"] = "Audi RS6",
+		["leotaxi"] = "Taxi",
+		["bearcat"] = "HTSF Blindé",
+		["riot2"] = "Antiemeute",
+		["um20fpiu"] = "Ford Interceptor Bana",
+		["um21tahoe"] = "Ford Tahoe Bana",
+		["umf150"] = "Ford F150 Bana",
+		["umrav4"] = "Toyota rav4 Bana",
 	},
 	-- Grade 3
 	[3] = {
-		["police"] = "Police Car 1",
-		["police2"] = "Police Car 2",
-		["police3"] = "Police Car 3",
-		["police4"] = "Police Car 4",
-		["policeb"] = "Police Car 5",
-		["policet"] = "Police Car 6",
-		["sheriff"] = "Sheriff Car 1",
-		["sheriff2"] = "Sheriff Car 2",
+		["2018k9chgrrb"] = "Dodge Charger",
+		["rbcv11"] = "Crown Victoria",
+		["lssd16"] = "Ford Interceptor",
+		["pd21tahoe"] = "Chevrolet Tahoe",
+		["17silvrb"] = "Chevrolet Silverado",
+		["jeepgd"] = "Jeep Gladiator",
+		["dreads"] = "HTSF Granger",
+		["hwp2018v2"] = "BMW HighSpeed",
+		["ACTPOLavantum"] = "Audi RS6",
+		["leotaxi"] = "Taxi",
+		["bearcat"] = "HTSF Blindé",
+		["riot2"] = "Antiemeute",
+		["um20fpiu"] = "Ford Interceptor Bana",
+		["um21tahoe"] = "Ford Tahoe Bana",
+		["umf150"] = "Ford F150 Bana",
+		["umrav4"] = "Toyota rav4 Bana",
 	},
 	-- Grade 4
 	[4] = {
-		["police"] = "Police Car 1",
-		["police2"] = "Police Car 2",
-		["police3"] = "Police Car 3",
-		["police4"] = "Police Car 4",
-		["policeb"] = "Police Car 5",
-		["policet"] = "Police Car 6",
-		["sheriff"] = "Sheriff Car 1",
-		["sheriff2"] = "Sheriff Car 2",
+		["2018k9chgrrb"] = "Dodge Charger",
+		["rbcv11"] = "Crown Victoria",
+		["lssd16"] = "Ford Interceptor",
+		["pd21tahoe"] = "Chevrolet Tahoe",
+		["17silvrb"] = "Chevrolet Silverado",
+		["jeepgd"] = "Jeep Gladiator",
+		["dreads"] = "HTSF Granger",
+		["hwp2018v2"] = "BMW HighSpeed",
+		["ACTPOLavantum"] = "Audi RS6",
+		["leotaxi"] = "Taxi",
+		["bearcat"] = "HTSF Blindé",
+		["riot2"] = "Antiemeute",
+		["um20fpiu"] = "Ford Interceptor Bana",
+		["um21tahoe"] = "Ford Tahoe Bana",
+		["umf150"] = "Ford F150 Bana",
+		["umrav4"] = "Toyota rav4 Bana",
 	}
 }
 
@@ -187,22 +220,22 @@ Config.Radars = {
 
 Config.CarItems = {
     [1] = {
-        name = "heavyarmor",
-        amount = 2,
+        name = "police_stormram",
+        amount = 1,
         info = {},
         type = "item",
         slot = 1,
     },
     [2] = {
-        name = "empty_evidence_bag",
-        amount = 10,
+        name = "weapon_nightstick",
+        amount = 2,
         info = {},
         type = "item",
         slot = 2,
     },
     [3] = {
-        name = "police_stormram",
-        amount = 1,
+        name = "radio",
+        amount = 2,
         info = {},
         type = "item",
         slot = 3,
@@ -214,7 +247,7 @@ Config.Items = {
     slots = 30,
     items = {
         [1] = {
-            name = "weapon_pistol",
+            name = "weapon_combatpistol",
             price = 0,
             amount = 1,
             info = {
@@ -275,7 +308,6 @@ Config.Items = {
                 serie = "",
                 attachments = {
                     {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
-                    {component = "COMPONENT_AT_SCOPE_MEDIUM", label = "3x Scope"},
                 }
             },
             type = "weapon",
@@ -294,7 +326,7 @@ Config.Items = {
         [7] = {
             name = "pistol_ammo",
             price = 0,
-            amount = 5,
+            amount = 10,
             info = {},
             type = "item",
             slot = 7,
@@ -303,7 +335,7 @@ Config.Items = {
         [8] = {
             name = "smg_ammo",
             price = 0,
-            amount = 5,
+            amount = 10,
             info = {},
             type = "item",
             slot = 8,
@@ -312,7 +344,7 @@ Config.Items = {
         [9] = {
             name = "shotgun_ammo",
             price = 0,
-            amount = 5,
+            amount = 10,
             info = {},
             type = "item",
             slot = 9,
@@ -321,7 +353,7 @@ Config.Items = {
         [10] = {
             name = "rifle_ammo",
             price = 0,
-            amount = 5,
+            amount = 10,
             info = {},
             type = "item",
             slot = 10,
@@ -348,58 +380,63 @@ Config.Items = {
         [13] = {
             name = "empty_evidence_bag",
             price = 0,
-            amount = 50,
+            amount = 10,
             info = {},
             type = "item",
             slot = 13,
             authorizedJobGrades = {0, 1, 2, 3, 4}
         },
         [14] = {
-            name = "police_stormram",
+            name = "armor",
             price = 0,
-            amount = 50,
+            amount = 1,
             info = {},
             type = "item",
             slot = 14,
             authorizedJobGrades = {0, 1, 2, 3, 4}
         },
         [15] = {
-            name = "armor",
+            name = "radio",
             price = 0,
-            amount = 50,
+            amount = 1,
             info = {},
             type = "item",
             slot = 15,
             authorizedJobGrades = {0, 1, 2, 3, 4}
         },
-        [16] = {
-            name = "radio",
+		[16] = {
+            name = "ifaks",
             price = 0,
-            amount = 50,
+            amount = 1,
             info = {},
             type = "item",
             slot = 16,
-            authorizedJobGrades = {0, 1, 2, 3, 4}
-        },
-        [17] = {
-            name = "heavyarmor",
-            price = 0,
-            amount = 50,
-            info = {},
-            type = "item",
-            slot = 17,
             authorizedJobGrades = {0, 1, 2, 3, 4}
         }
     }
 }
 
 Config.VehicleSettings = {
-    ["car1"] = { --- Model name
+    ["2018k9chgrrb"] = { --- Model name
         ["extras"] = {
             ["1"] = true, -- on/off
             ["2"] = true,
             ["3"] = true,
             ["4"] = true,
+            ["6"] = true,
+            ["7"] = true,
+            ["8"] = true,
+            ["10"] = true,
+            ["11"] = true,
+            ["12"] = true,
+            ["13"] = true,
+        }
+    },
+    ["jeepgd"] = {
+        ["extras"] = {
+			["1"] = true,
+            ["2"] = true,
+            ["3"] = true,
             ["5"] = true,
             ["6"] = true,
             ["7"] = true,
@@ -407,11 +444,10 @@ Config.VehicleSettings = {
             ["9"] = true,
             ["10"] = true,
             ["11"] = true,
-            ["12"] = true,
             ["13"] = true,
         }
     },
-    ["car2"] = {
+	["pd21tahoe"] = {
         ["extras"] = {
             ["1"] = true,
             ["2"] = true,
@@ -426,6 +462,86 @@ Config.VehicleSettings = {
             ["11"] = true,
             ["12"] = true,
             ["13"] = true,
+        }
+    },
+	["rbcv11"] = {
+        ["extras"] = {
+            ["1"] = true,
+            ["2"] = true,
+            ["3"] = true,
+            ["4"] = true,
+            ["5"] = true,
+            ["6"] = true,
+            ["8"] = true,
+            ["9"] = true,
+            ["10"] = true,
+            ["11"] = true,
+            ["12"] = true,
+            ["13"] = true,
+        }
+    },
+	["17silvrb"] = {
+        ["extras"] = {
+            ["1"] = true,
+            ["2"] = true,
+            ["3"] = true,
+            ["4"] = true,
+            ["5"] = true,
+            ["6"] = true,
+            ["7"] = true,
+            ["8"] = true,
+            ["9"] = true,
+            ["10"] = true,
+            ["11"] = true,
+            ["12"] = true,
+            ["13"] = true,
+        }
+    },
+	["lssd16"] = {
+        ["extras"] = {
+            ["1"] = true,
+            ["2"] = true,
+            ["3"] = true,
+            ["4"] = true,
+            ["5"] = true,
+            ["6"] = true,
+            ["7"] = true,
+            ["8"] = true,
+            ["9"] = true,
+            ["10"] = true,
+            ["11"] = true,
+            ["12"] = true,
+            ["13"] = true,
+        }
+    },
+	["umrav4"] = {
+        ["extras"] = {
+            ["1"] = true,         
+            ["4"] = true,
+            ["5"] = true,
+        }
+    },
+	["umf150"] = {
+        ["extras"] = {
+            ["1"] = true,          
+            ["3"] = true,
+            ["4"] = true,
+            ["5"] = true,
+            ["6"] = true,
+        }
+    },
+	["um21tahoe"] = {
+        ["extras"] = {
+            ["1"] = true,           
+            ["4"] = true,
+            ["5"] = true,
+        }
+    },
+	["um20fpiu"] = {
+        ["extras"] = {
+            ["1"] = true,
+            ["4"] = true,
+            ["5"] = true,
         }
     }
 }
