@@ -1,4 +1,13 @@
 Config = {}
+Config.Integrations = {}
+
+
+-- Resources Integrations
+Config.Integrations.CdDispatch = {
+    activate = false, -- Use cd_dispatch for alerts instead of default alert system
+    jobs = {"police"}, -- Table of jobs that receive alerts
+    blips = 61, -- Blip displayed on the map
+}
 
 Config.Objects = {
     ["cone"] = {model = `prop_roadcone02a`, freeze = false},

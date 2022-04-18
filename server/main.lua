@@ -482,13 +482,35 @@ QBCore.Commands.Add('911p', Lang:t("commands.police_report"), {{name='message', 
 	if args[1] then message = table.concat(args, " ") else message = Lang:t("commands.civilian_call") end
     local ped = GetPlayerPed(src)
     local coords = GetEntityCoords(ped)
-    local players = QBCore.Functions.GetQBPlayers()
-    for k,v in pairs(players) do
-        if v.PlayerData.job.name == 'police' and v.PlayerData.job.onduty then
-            local alertData = {title = Lang:t("commands.emergency_call"), coords = {coords.x, coords.y, coords.z}, description = message}
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", v.PlayerData.source, alertData)
-            TriggerClientEvent('police:client:policeAlert', v.PlayerData.source, coords, message)
+    local dispatch = Config.Integrations.CdDispatch
+
+    if not dispatch or not dispatch.enabled then
+        local players = QBCore.Functions.GetQBPlayers()
+        for k,v in pairs(players) do
+            if v.PlayerData.job.name == 'police' and v.PlayerData.job.onduty then
+                local alertData = {title = Lang:t("commands.emergency_call"), coords = {coords.x, coords.y, coords.z}, description = message}
+                TriggerClientEvent("qb-phone:client:addPoliceAlert", v.PlayerData.source, alertData)
+                TriggerClientEvent('police:client:policeAlert', v.PlayerData.source, coords, message)
+            end
         end
+    else
+        TriggerClientEvent('cd_dispatch:AddNotification', -1, {
+            job_table = dispatch.jobs,
+            coords = coords,
+            title = Lang:t("commands.emergency_call"),
+            message = message,
+            flash = 0,
+            unique_id = tostring(math.random(0000000,9999999)),
+            blip = {
+                sprite = dispatch.blips,
+                scale = 1.2,
+                colour = 3,
+                flashes = false,
+                text = Lang:t("commands.emergency_call"),
+                time = (5*60*1000),
+                sound = 1,
+            }
+        })
     end
 end)
 
@@ -624,13 +646,35 @@ RegisterNetEvent('police:server:policeAlert', function(text)
     local src = source
     local ped = GetPlayerPed(src)
     local coords = GetEntityCoords(ped)
-    local players = QBCore.Functions.GetQBPlayers()
-    for k,v in pairs(players) do
-        if v.PlayerData.job.name == 'police' and v.PlayerData.job.onduty then
-            local alertData = {title = Lang:t('info.new_call'), coords = {coords.x, coords.y, coords.z}, description = text}
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", v.PlayerData.source, alertData)
-            TriggerClientEvent('police:client:policeAlert', v.PlayerData.source, coords, text)
+    local dispatch = Config.Integrations.CdDispatch
+
+    if not dispatch or not dispatch.enabled then
+        local players = QBCore.Functions.GetQBPlayers()
+        for k,v in pairs(players) do
+            if v.PlayerData.job.name == 'police' and v.PlayerData.job.onduty then
+                local alertData = {title = Lang:t('info.new_call'), coords = {coords.x, coords.y, coords.z}, description = text}
+                TriggerClientEvent("qb-phone:client:addPoliceAlert", v.PlayerData.source, alertData)
+                TriggerClientEvent('police:client:policeAlert', v.PlayerData.source, coords, text)
+            end
         end
+    else
+        TriggerClientEvent('cd_dispatch:AddNotification', -1, {
+			job_table = dispatch.jobs,
+			coords = coords,
+			title = Lang:t('info.new_call'),
+			message = text,
+			flash = 0,
+			unique_id = tostring(math.random(0000000,9999999)),
+			blip = {
+				sprite = dispatch.blips,
+				scale = 1.2,
+				colour = 3,
+				flashes = false,
+				text = Lang:t('info.new_call'),
+				time = (5*60*1000),
+				sound = 1,
+			}
+		})
     end
 end)
 
