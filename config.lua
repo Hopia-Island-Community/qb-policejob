@@ -6,7 +6,7 @@ Config.Integrations = {}
 Config.Integrations.CdDispatch = {
     enabled = false, -- Use cd_dispatch for alerts instead of default alert system
     jobs = {"police"}, -- Table of jobs that receive alerts
-    blips = 61, -- Blip displayed on the map
+    blips = 60, -- Blip displayed on the map
 }
 
 Config.Objects = {
