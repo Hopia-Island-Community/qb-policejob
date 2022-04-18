@@ -494,6 +494,9 @@ QBCore.Commands.Add('911p', Lang:t("commands.police_report"), {{name='message', 
             end
         end
     else
+        local street1, street2 = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+        local street1name = GetStreetNameFromHashKey(street1)
+        local street2name = GetStreetNameFromHashKey(street2)
         TriggerClientEvent('cd_dispatch:AddNotification', -1, {
             job_table = dispatch.jobs,
             coords = coords,
@@ -658,11 +661,14 @@ RegisterNetEvent('police:server:policeAlert', function(text)
             end
         end
     else
+        local street1, street2 = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+        local street1name = GetStreetNameFromHashKey(street1)
+        local street2name = GetStreetNameFromHashKey(street2)
         TriggerClientEvent('cd_dispatch:AddNotification', -1, {
 			job_table = dispatch.jobs,
 			coords = coords,
-			title = Lang:t('info.new_call'),
-			message = text,
+			title = text,
+			message = street1name .. " " .. street2name,
 			flash = 0,
 			unique_id = tostring(math.random(0000000,9999999)),
 			blip = {
