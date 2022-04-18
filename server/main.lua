@@ -121,7 +121,7 @@ QBCore.Commands.Add("grantlicense", Lang:t("commands.license_grant"), {{name = "
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.grade.level >= Config.LicenseRank then
-        if args[2] == "driver" or args[2] == "weapon" then
+        if args[2] == "driver" or args[2] == "weapon1" or args[2] == "weapon2" or args[2] == "weapon3" then
             local SearchedPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
             if not SearchedPlayer then return end
             local licenseTable = SearchedPlayer.PlayerData.metadata["licences"]
@@ -188,15 +188,15 @@ QBCore.Commands.Add("pobject", Lang:t("commands.place_object"), {{name = "type",
     end
 end)
 
-QBCore.Commands.Add("cuff", Lang:t("commands.cuff_player"), {}, false, function(source, args)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
-        TriggerClientEvent("police:client:CuffPlayer", src)
-    else
-        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
-    end
-end)
+-- QBCore.Commands.Add("cuff", Lang:t("commands.cuff_player"), {}, false, function(source, args)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+--     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
+--         TriggerClientEvent("police:client:CuffPlayer", src)
+--     else
+--         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
+--     end
+-- end)
 
 QBCore.Commands.Add("escort", Lang:t("commands.escort"), {}, false, function(source, args)
     local src = source
@@ -266,15 +266,15 @@ QBCore.Commands.Add("seizecash", Lang:t("commands.seizecash"), {}, false, functi
     end
 end)
 
-QBCore.Commands.Add("sc", Lang:t("commands.softcuff"), {}, false, function(source)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
-        TriggerClientEvent("police:client:CuffPlayerSoft", src)
-    else
-        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
-    end
-end)
+-- QBCore.Commands.Add("sc", Lang:t("commands.softcuff"), {}, false, function(source)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+--     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
+--         TriggerClientEvent("police:client:CuffPlayerSoft", src)
+--     else
+--         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
+--     end
+-- end)
 
 QBCore.Commands.Add("cam", Lang:t("commands.camera"), {{name = "camid", help = Lang:t('info.camera_id')}}, false, function(source, args)
     local src = source
@@ -401,11 +401,31 @@ QBCore.Commands.Add("paylawyer", Lang:t("commands.paylawyer"), {{name = "id",hel
     end
 end)
 
-QBCore.Commands.Add("anklet", Lang:t("commands.anklet"), {}, false, function(source)
+-- QBCore.Commands.Add("anklet", Lang:t("commands.anklet"), {}, false, function(source)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+--     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
+--         TriggerClientEvent("police:client:CheckDistance", src)
+--     else
+--         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
+--     end
+-- end)
+
+QBCore.Commands.Add("removeanklet", Lang:t("commands.removeanklet"), {{name = "cid", help = Lang:t('info.citizen_id')}}, true,function(source, args)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
-        TriggerClientEvent("police:client:CheckDistance", src)
+        if args[1] then
+            local citizenid = args[1]
+            local Target = QBCore.Functions.GetPlayerByCitizenId(citizenid)
+            if Target then
+                if Target.PlayerData.metadata["tracker"] then
+                    TriggerClientEvent("police:client:SendTrackerLocation", Target.PlayerData.source, src)
+                else
+                    TriggerClientEvent('QBCore:Notify', src, Lang:t("error.no_anklet"), 'error')
+                end
+            end
+        end
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.on_duty_police_only"), 'error')
     end
@@ -441,17 +461,33 @@ QBCore.Commands.Add("takedrivinglicense", Lang:t("commands.drivinglicense"), {},
     end
 end)
 
-QBCore.Commands.Add("takedna", Lang:t("commands.takedna"), {{name = "id", help = Lang:t('info.player_id')}}, true, function(source, args)
+-- QBCore.Commands.Add("takedna", Lang:t("commands.takedna"), {{name = "id", help = Lang:t('info.player_id')}}, true, function(source, args)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+--     local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
+--     if ((Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) and OtherPlayer then
+--         if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
+--             local info = {
+--                 label = Lang:t('info.dna_sample'),
+--                 type = "dna",
+--                 dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid)
+--             }
+--             if Player.Functions.AddItem("filled_evidence_bag", 1, false, info) then
+--                 TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+--             end
+--         else
+--             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.have_evidence_bag"), "error")
+--         end
+--     end
+-- end)
+
+RegisterNetEvent('police:server:takedna', function(id)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    local OtherPlayer = QBCore.Functions.GetPlayer(id)
     if ((Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) and OtherPlayer then
         if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
-            local info = {
-                label = Lang:t('info.dna_sample'),
-                type = "dna",
-                dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid)
-            }
+            local info = { label = Lang:t('info.dna_sample'), type = "dna",  dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid)}
             if Player.Functions.AddItem("filled_evidence_bag", 1, false, info) then
                 TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
             end
@@ -645,7 +681,7 @@ RegisterNetEvent('police:server:CuffPlayer', function(playerId, isSoftcuff)
     local Player = QBCore.Functions.GetPlayer(src)
     local CuffedPlayer = QBCore.Functions.GetPlayer(playerId)
     if CuffedPlayer then
-        if Player.Functions.GetItemByName("handcuffs") or Player.PlayerData.job.name == "police" then
+        if Player.Functions.GetItemByName("handcuffs") then
             TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
         end
     end
@@ -711,7 +747,7 @@ RegisterNetEvent('police:server:BillPlayer', function(playerId, price)
     if Player.PlayerData.job.name == "police" then
         if OtherPlayer then
             OtherPlayer.Functions.RemoveMoney("bank", price, "paid-bills")
-		exports['qb-management']:AddMoney("police", price)
+            exports['qb-management']:AddMoney("police", price)
             TriggerClientEvent('QBCore:Notify', OtherPlayer.PlayerData.source, Lang:t("info.fine_received", {fine = price}))
         end
     end
@@ -998,6 +1034,34 @@ RegisterNetEvent('police:server:SetTracker', function(targetId)
         TriggerClientEvent('QBCore:Notify', targetId, Lang:t("success.put_anklet"), 'success')
         TriggerClientEvent('QBCore:Notify', src, Lang:t("success.put_anklet_on", {firstname = Target.PlayerData.charinfo.firstname, lastname = Target.PlayerData.charinfo.lastname}), 'success')
         TriggerClientEvent('police:client:SetTracker', targetId, true)
+    end
+end)
+
+RegisterNetEvent('police:server:removeTracker', function(targetId, legal)
+    local src = source
+    local Target = QBCore.Functions.GetPlayer(targetId)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local TrackerMeta = Target.PlayerData.metadata["tracker"]
+    if TrackerMeta then
+        Target.Functions.SetMetaData("tracker", false)
+        TriggerClientEvent('QBCore:Notify', targetId, Lang:t("success.anklet_taken_off"), 'success')
+        TriggerClientEvent('QBCore:Notify', src, Lang:t("success.took_anklet_from", {firstname = Target.PlayerData.charinfo.firstname, lastname = Target.PlayerData.charinfo.lastname}), 'success')
+        TriggerClientEvent('police:client:SetTracker', targetId, false)
+        Player.Functions.AddItem("anklet", 1)
+    end
+end)
+
+RegisterNetEvent('police:server:addTracker', function(targetId, legal)
+    local src = source
+    local Target = QBCore.Functions.GetPlayer(targetId)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local TrackerMeta = Target.PlayerData.metadata["tracker"]
+    if not TrackerMeta then
+        Target.Functions.SetMetaData("tracker", true)
+        TriggerClientEvent('QBCore:Notify', targetId, Lang:t("success.put_anklet"), 'success')
+        TriggerClientEvent('QBCore:Notify', src, Lang:t("success.put_anklet_on", {firstname = Target.PlayerData.charinfo.firstname, lastname = Target.PlayerData.charinfo.lastname}), 'success')
+        TriggerClientEvent('police:client:SetTracker', targetId, true)
+        Player.Functions.RemoveItem("anklet", 1)
     end
 end)
 
