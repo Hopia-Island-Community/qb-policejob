@@ -279,6 +279,98 @@ RegisterNetEvent('police:client:CuffPlayerSoft', function()
     end
 end)
 
+exports['qb-target']:AddGlobalPlayer({
+    options = {
+        {
+			icon = 'fa-solid fa-handcuffs',
+			label = 'Menotter / Démenotter',
+            job = 'police',
+            item = 'handcuffs',
+			canInteract = function(ent)
+				return QBCore.Functions.GetPlayerData().job.onduty and IsPedAPlayer(ent) and not IsPedInAnyVehicle(ent) and not IsPedInAnyVehicle(PlayerPedId()) and not isHandcuffed and not isEscorted
+			end,
+            action = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                TriggerServerEvent("police:server:CuffPlayer", playerId, false)
+                HandCuffAnimation()
+            end,
+        },
+        {
+			icon = 'fa-solid fa-person-military-pointing',
+			label = 'Escorter',
+            job = 'police',
+			canInteract = function(ent)
+				return QBCore.Functions.GetPlayerData().job.onduty and IsPedAPlayer(ent) and not IsPedInAnyVehicle(ent) and not IsPedInAnyVehicle(PlayerPedId()) and not isHandcuffed and not isEscorted
+			end,
+            action = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                TriggerServerEvent("police:server:EscortPlayer", playerId)
+            end,
+        },
+        {
+			icon = 'fa-solid fa-eye-dropper',
+			label = 'Prendre du sang',
+            job = 'police',
+            item = "empty_evidence_bag",
+			canInteract = function(ent)
+                local onPos = false
+                local pos = GetEntityCoords(PlayerPedId())
+
+                for k, v in pairs(Config.Locations["dnacenter"]) do
+                    if #(pos - v) < 5 then
+                        onPos = true
+                    end
+                end
+
+				return QBCore.Functions.GetPlayerData().job.onduty and IsPedAPlayer(ent) and not IsPedInAnyVehicle(ent) and not IsPedInAnyVehicle(PlayerPedId()) and not isHandcuffed and not isEscorted and onPos
+			end,
+            action = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                TriggerServerEvent("police:server:takedna", playerId)
+            end
+        },
+        {
+			icon = 'fa-solid fa-ring',
+			label = 'Poser un bracelet éléctronique',
+            job = 'police',
+            item = 'anklet',
+			canInteract = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+
+                --local res = getPlayerData(playerId)
+				return QBCore.Functions.GetPlayerData().job.onduty and IsPedAPlayer(ent) and not IsPedInAnyVehicle(ent) and not IsPedInAnyVehicle(PlayerPedId()) and not isHandcuffed and not isEscorted -- and not res.metadata["tracker"]
+			end,
+            action = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                TriggerServerEvent("police:server:addTracker", playerId, true)
+            end
+        }
+    },
+    distance = 1,
+})
+
+exports['qb-target']:AddGlobalPlayer({
+    options = {
+        {
+			icon = 'fa-solid fa-ring',
+			label = 'retirer le bracelet éléctronique',
+            job = 'police',
+			canInteract = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                --local res = getPlayerData(playerId)
+
+				return QBCore.Functions.GetPlayerData().job.onduty and IsPedAPlayer(ent) and not IsPedInAnyVehicle(ent) and not IsPedInAnyVehicle(PlayerPedId()) and not isHandcuffed and not isEscorted -- and res.metadata["tracker"]
+			end,
+            action = function(ent)
+                local playerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(ent))
+                TriggerServerEvent("police:server:removeTracker", playerId, true)
+            end
+        }
+    },
+    distance = 1,
+})
+
+
 RegisterNetEvent('police:client:CuffPlayer', function()
     if not IsPedRagdoll(PlayerPedId()) then
         local player, distance = QBCore.Functions.GetClosestPlayer()
