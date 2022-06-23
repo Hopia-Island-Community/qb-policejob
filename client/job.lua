@@ -10,6 +10,7 @@ local inHelicopter = false
 local inImpound = false
 local inGarage = false
 
+<<<<<<< HEAD
 -- fingerprint in an event.
 exports['qb-target']:AddGlobalPlayer({
     options = {
@@ -55,6 +56,8 @@ local function DrawText3D(x, y, z, text)
     ClearDrawOrigin()
 end
 
+=======
+>>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 local function loadAnimDict(dict) -- interactions, job,
     while (not HasAnimDictLoaded(dict)) do
         RequestAnimDict(dict)
@@ -93,7 +96,7 @@ end
 
 local function SetCarItemsInfo()
 	local items = {}
-	for k, item in pairs(Config.CarItems) do
+	for _, item in pairs(Config.CarItems) do
 		local itemInfo = QBCore.Shared.Items[item.name:lower()]
 		items[item.slot] = {
 			name = itemInfo["name"],
@@ -165,7 +168,7 @@ function TakeOutImpound(vehicle)
                 SetEntityHeading(veh, coords.w)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                 doCarDamage(veh, vehicle)
-                TriggerServerEvent('police:server:TakeOutImpound',vehicle.plate)
+                TriggerServerEvent('police:server:TakeOutImpound', vehicle.plate, currentGarage)
                 closeMenuFull()
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
@@ -185,7 +188,12 @@ function TakeOutVehicle(vehicleInfo)
             exports['LegacyFuel']:SetFuel(veh, 100.0)
             closeMenuFull()
             if Config.VehicleSettings[vehicleInfo] ~= nil then
-                QBCore.Shared.SetDefaultVehicleExtras(veh, Config.VehicleSettings[vehicleInfo].extras)
+                if Config.VehicleSettings[vehicleInfo].extras ~= nil then
+			QBCore.Shared.SetDefaultVehicleExtras(veh, Config.VehicleSettings[vehicleInfo].extras)
+		end
+		if Config.VehicleSettings[vehicleInfo].livery ~= nil then
+			SetVehicleLivery(veh, Config.VehicleSettings[vehicleInfo].livery)
+		end
             end
             TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
             TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
@@ -205,7 +213,7 @@ local function IsArmoryWhitelist() -- being removed
 end
 
 local function SetWeaponSeries()
-    for k, v in pairs(Config.Items.items) do
+    for k, _ in pairs(Config.Items.items) do
         if k < 6 then
             Config.Items.items[k].info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
         end
@@ -277,7 +285,6 @@ function MenuImpound(currentSelection)
             shouldContinue = true
             for _ , v in pairs(result) do
                 local enginePercent = QBCore.Shared.Round(v.engine / 10, 0)
-                local bodyPercent = QBCore.Shared.Round(v.body / 10, 0)
                 local currentFuel = v.fuel
                 local vname = QBCore.Shared.Vehicles[v.vehicle].name
 
@@ -315,9 +322,10 @@ function closeMenuFull()
 end
 
 --NUI Callbacks
-RegisterNUICallback('closeFingerprint', function()
+RegisterNUICallback('closeFingerprint', function(_, cb)
     SetNuiFocus(false, false)
     inFingerprint = false
+    cb('ok')
 end)
 
 --Events
@@ -334,8 +342,9 @@ RegisterNetEvent('police:client:showFingerprintId', function(fid)
     PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
 end)
 
-RegisterNUICallback('doFingerScan', function(data)
+RegisterNUICallback('doFingerScan', function(_, cb)
     TriggerServerEvent('police:server:showFingerprintId', FingerPrintSessionId)
+    cb("ok")
 end)
 
 RegisterNetEvent('police:client:SendEmergencyMessage', function(coords, message)
@@ -390,7 +399,7 @@ RegisterNetEvent('police:client:CheckStatus', function()
                 local playerId = GetPlayerServerId(player)
                 QBCore.Functions.TriggerCallback('police:GetPlayerStatus', function(result)
                     if result then
-                        for k, v in pairs(result) do
+                        for _, v in pairs(result) do
                             QBCore.Functions.Notify(''..v..'')
                         end
                     end
@@ -549,7 +558,7 @@ if Config.UseTarget then
 else
     -- Toggle Duty
     local dutyZones = {}
-    for k, v in pairs(Config.Locations["duty"]) do
+    for _, v in pairs(Config.Locations["duty"]) do
         dutyZones[#dutyZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 1.75, 1, {
             name="box_zone",
@@ -587,8 +596,6 @@ else
                     TriggerServerEvent("QBCore:ToggleDuty")
                     TriggerServerEvent("police:server:UpdateBlips")
                 end
-            else
-                sleep = 1000
             end
             Wait(sleep)
         end
@@ -598,7 +605,7 @@ end
 CreateThread(function()
     -- Evidence Storage
     local evidenceZones = {}
-    for k, v in pairs(Config.Locations["evidence"]) do
+    for _, v in pairs(Config.Locations["evidence"]) do
         evidenceZones[#evidenceZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 2, 1, {
             name="box_zone",
@@ -639,7 +646,7 @@ CreateThread(function()
 
     -- Personal Stash
     local stashZones = {}
-    for k, v in pairs(Config.Locations["stash"]) do
+    for _, v in pairs(Config.Locations["stash"]) do
         stashZones[#stashZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 1.5, 1.5, {
             name="box_zone",
@@ -650,7 +657,7 @@ CreateThread(function()
     end
 
     local stashCombo = ComboZone:Create(stashZones, {name = "stashCombo", debugPoly = false})
-    stashCombo:onPlayerInOut(function(isPointInside, point, zone)
+    stashCombo:onPlayerInOut(function(isPointInside, _, _)
         if isPointInside then
             inStash = true
             exports['qb-core']:DrawText(Lang:t('info.stash_enter'), 'left')
@@ -662,7 +669,7 @@ CreateThread(function()
 
     -- Police Trash
     local trashZones = {}
-    for k, v in pairs(Config.Locations["trash"]) do
+    for _, v in pairs(Config.Locations["trash"]) do
         trashZones[#trashZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 1, 1.75, {
             name="box_zone",
@@ -686,6 +693,7 @@ CreateThread(function()
     end)
 
     -- Fingerprints
+<<<<<<< HEAD
     -- local fingerprintZones = {}
     -- for k, v in pairs(Config.Locations["fingerprint"]) do
     --     fingerprintZones[#fingerprintZones+1] = BoxZone:Create(
@@ -709,10 +717,35 @@ CreateThread(function()
     --         exports['qb-core']:HideText()
     --     end
     -- end)
+=======
+    local fingerprintZones = {}
+    for _, v in pairs(Config.Locations["fingerprint"]) do
+        fingerprintZones[#fingerprintZones+1] = BoxZone:Create(
+            vector3(vector3(v.x, v.y, v.z)), 2, 1, {
+            name="box_zone",
+            debugPoly = false,
+            minZ = v.z - 1,
+            maxZ = v.z + 1,
+        })
+    end
+
+    local fingerprintCombo = ComboZone:Create(fingerprintZones, {name = "fingerprintCombo", debugPoly = false})
+    fingerprintCombo:onPlayerInOut(function(isPointInside)
+        if isPointInside then
+            inFingerprint = true
+            if onDuty then
+                exports['qb-core']:DrawText(Lang:t('info.scan_fingerprint'),'left')
+            end
+        else
+            inFingerprint = false
+            exports['qb-core']:HideText()
+        end
+    end)
+>>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 
     -- Armoury
     local armouryZones = {}
-    for k, v in pairs(Config.Locations["armory"]) do
+    for _, v in pairs(Config.Locations["armory"]) do
         armouryZones[#armouryZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 5, 1, {
             name="box_zone",
@@ -737,7 +770,7 @@ CreateThread(function()
 
     -- Helicopter
     local helicopterZones = {}
-    for k, v in pairs(Config.Locations["helicopter"]) do
+    for _, v in pairs(Config.Locations["helicopter"]) do
         helicopterZones[#helicopterZones+1] = BoxZone:Create(
             vector3(vector3(v.x, v.y, v.z)), 10, 10, {
             name="box_zone",
@@ -767,7 +800,7 @@ CreateThread(function()
 
     -- Police Impound
     local impoundZones = {}
-    for k, v in pairs(Config.Locations["impound"]) do
+    for _, v in pairs(Config.Locations["impound"]) do
         impoundZones[#impoundZones+1] = BoxZone:Create(
             vector3(v.x, v.y, v.z), 1, 1, {
             name="box_zone",
@@ -814,7 +847,7 @@ CreateThread(function()
 
     -- Police Garage
     local garageZones = {}
-    for k, v in pairs(Config.Locations["vehicle"]) do
+    for _, v in pairs(Config.Locations["vehicle"]) do
         garageZones[#garageZones+1] = BoxZone:Create(
             vector3(v.x, v.y, v.z), 3, 3, {
             name="box_zone",
