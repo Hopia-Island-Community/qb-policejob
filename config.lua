@@ -513,7 +513,6 @@ Config.VehicleSettings = {
             ["11"] = true,
             ["12"] = true,
             ["13"] = true,
-<<<<<<< HEAD
         }
     },
 	["umrav4"] = {
@@ -545,9 +544,5 @@ Config.VehicleSettings = {
             ["4"] = true,
             ["5"] = true,
         }
-=======
-        },
-		["livery"] = 1,
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
     }
 }
