@@ -473,7 +473,6 @@ end)
 RegisterNetEvent('police:server:takedna', function(id)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-<<<<<<< HEAD
     local OtherPlayer = QBCore.Functions.GetPlayer(id)
     if ((Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) and OtherPlayer then
         if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
@@ -484,20 +483,6 @@ RegisterNetEvent('police:server:takedna', function(id)
         else
             TriggerClientEvent('QBCore:Notify', src, Lang:t("error.have_evidence_bag"), "error")
         end
-=======
-    local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    if not OtherPlayer or Player.PlayerData.job.name ~= "police" or not Player.PlayerData.job.onduty then return end
-    if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
-        local info = {
-            label = Lang:t('info.dna_sample'),
-            type = "dna",
-            dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid)
-        }
-        if not Player.Functions.AddItem("filled_evidence_bag", 1, false, info) then return end
-        TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
-    else
-        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.have_evidence_bag"), "error")
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
     end
 end)
 
@@ -688,17 +673,9 @@ RegisterNetEvent('police:server:CuffPlayer', function(playerId, isSoftcuff)
 
     local Player = QBCore.Functions.GetPlayer(src)
     local CuffedPlayer = QBCore.Functions.GetPlayer(playerId)
-<<<<<<< HEAD
-    if CuffedPlayer then
-        if Player.Functions.GetItemByName("handcuffs") then
-            TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
-        end
-    end
-=======
     if not Player or not CuffedPlayer or (not Player.Functions.GetItemByName("handcuffs") and Player.PlayerData.job.name ~= "police") then return end
 
     TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 end)
 
 RegisterNetEvent('police:server:EscortPlayer', function(playerId)
@@ -786,21 +763,11 @@ RegisterNetEvent('police:server:BillPlayer', function(playerId, price)
 
     local Player = QBCore.Functions.GetPlayer(src)
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
-<<<<<<< HEAD
-    if Player.PlayerData.job.name == "police" then
-        if OtherPlayer then
-            OtherPlayer.Functions.RemoveMoney("bank", price, "paid-bills")
-            exports['qb-management']:AddMoney("police", price)
-            TriggerClientEvent('QBCore:Notify', OtherPlayer.PlayerData.source, Lang:t("info.fine_received", {fine = price}))
-        end
-    end
-=======
     if not Player or not OtherPlayer or Player.PlayerData.job.name ~= "police" then return end
 
     OtherPlayer.Functions.RemoveMoney("bank", price, "paid-bills")
     exports['qb-management']:AddMoney("police", price)
     TriggerClientEvent('QBCore:Notify', OtherPlayer.PlayerData.source, Lang:t("info.fine_received", {fine = price}))
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 end)
 
 RegisterNetEvent('police:server:JailPlayer', function(playerId, time)
