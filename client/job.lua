@@ -10,7 +10,6 @@ local inHelicopter = false
 local inImpound = false
 local inGarage = false
 
-<<<<<<< HEAD
 -- fingerprint in an event.
 exports['qb-target']:AddGlobalPlayer({
     options = {
@@ -40,24 +39,6 @@ exports['qb-target']:AddGlobalPlayer({
     distance = 2.5,
 })
 
--- Functions
-local function DrawText3D(x, y, z, text)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x,y,z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
-end
-
-=======
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 local function loadAnimDict(dict) -- interactions, job,
     while (not HasAnimDictLoaded(dict)) do
         RequestAnimDict(dict)
@@ -472,6 +453,7 @@ end)
 -- Toggle Duty in an event.
 RegisterNetEvent('qb-policejob:ToggleDuty', function()
     onDuty = not onDuty
+    Citizen.Trace("on duty bitch");
     TriggerServerEvent("QBCore:ToggleDuty")
     TriggerServerEvent("police:server:UpdateCurrentCops")
     TriggerServerEvent("police:server:UpdateBlips")
@@ -693,9 +675,8 @@ CreateThread(function()
     end)
 
     -- Fingerprints
-<<<<<<< HEAD
     -- local fingerprintZones = {}
-    -- for k, v in pairs(Config.Locations["fingerprint"]) do
+    -- for _, v in pairs(Config.Locations["fingerprint"]) do
     --     fingerprintZones[#fingerprintZones+1] = BoxZone:Create(
     --         vector3(vector3(v.x, v.y, v.z)), 2, 1, {
     --         name="box_zone",
@@ -717,31 +698,6 @@ CreateThread(function()
     --         exports['qb-core']:HideText()
     --     end
     -- end)
-=======
-    local fingerprintZones = {}
-    for _, v in pairs(Config.Locations["fingerprint"]) do
-        fingerprintZones[#fingerprintZones+1] = BoxZone:Create(
-            vector3(vector3(v.x, v.y, v.z)), 2, 1, {
-            name="box_zone",
-            debugPoly = false,
-            minZ = v.z - 1,
-            maxZ = v.z + 1,
-        })
-    end
-
-    local fingerprintCombo = ComboZone:Create(fingerprintZones, {name = "fingerprintCombo", debugPoly = false})
-    fingerprintCombo:onPlayerInOut(function(isPointInside)
-        if isPointInside then
-            inFingerprint = true
-            if onDuty then
-                exports['qb-core']:DrawText(Lang:t('info.scan_fingerprint'),'left')
-            end
-        else
-            inFingerprint = false
-            exports['qb-core']:HideText()
-        end
-    end)
->>>>>>> 7c6d765a444bb1fc4d6328c4e00636acd94291db
 
     -- Armoury
     local armouryZones = {}
