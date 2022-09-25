@@ -46,7 +46,7 @@ Config.Locations = {
     },
     ["stations"] = {
         [1] = {label = "Hopia-Island Police Department", coords = vector4(-1109.55, -846.19, 19.32, 307.12)},
-        [2] = {label = "Prison", coords = vector4(1845.903, 2585.873, 45.672, 272.249)},
+        [2] = {label = "Prison d'Hopia", coords = vector4(686.74, 131.9, 80.75, 121.5)},
         --[3] = {label = "Police Station Paleto", coords = vector4(-451.55, 6014.25, 31.716, 223.81)},
     },
 }
